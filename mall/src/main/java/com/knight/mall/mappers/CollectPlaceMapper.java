@@ -12,16 +12,16 @@ public interface CollectPlaceMapper  {
 	CollectPlace load(Long id);
 
 	/***/
-	void insert(CollectPlace collectPlace);
+	Long insert(CollectPlace collectPlace);
 
 	/***/
-	void update(CollectPlace collectPlace);
+	int update(CollectPlace collectPlace);
 
 	/***/
-	void updateStatus(@Param("id") Long id, @Param("status") Serializable status);
+	int updateStatus(@Param("id") Long id, @Param("status") Serializable status);
 
 	/***/
-	void delete(Long id);
+	int delete(Long id);
 
 	/***/
 	List<CollectPlace> queryList(CollectPlaceQuery collectPlaceQuery);

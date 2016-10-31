@@ -4,10 +4,12 @@ import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Date;
 
+import com.knight.mall.common.pageUtils.AbstractQueryParam;
+
 /**
  * 查询对象
  */
-public class CollectPlaceQuery implements Serializable {
+public class CollectPlaceQuery extends AbstractQueryParam implements Serializable {
 	private static final long serialVersionUID = 14762231066651L;
 
 	private Long[] idArray;// 主键id
