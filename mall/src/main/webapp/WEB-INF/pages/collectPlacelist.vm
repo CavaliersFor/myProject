@@ -223,7 +223,7 @@
 	//删除自提点
   function deletCollect(id){
 	  jQuery.ajax({
-			url:"/collectPlace/delete",
+			url:"$!appUrl/collectPlace/delete",
 			data:"id="+id,
 			type:"POST",
 			dataType:"json",
@@ -255,7 +255,7 @@
   //显示新增自提点页面方法
   function addWin(id) {
 		jQuery.ajax({
-			url : "/collectPlace/addPage",
+			url : "$!appUrl/collectPlace/addPage",
 			data : "id="+id,
 			type : "POST",
 			dataType : "html",

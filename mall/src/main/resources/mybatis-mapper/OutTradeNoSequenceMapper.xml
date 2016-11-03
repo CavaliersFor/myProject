@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+
+<mapper namespace="com.knight.mall.mappers.OutTradeNoSequenceMapper">
+	<resultMap id="outTradeNoSequenceMap" type="outTradeNoSequence">		
+					<result column="out_trade_no" property="outTradeNo"/><!--  -->			
+			</resultMap>
+
+	<insert id="insert" parameterType="outTradeNoSequence" >
+				insert into
+		out_trade_no_sequence(
+		    													<if test="outTradeNo != null">,out_trade_no</if>
+									)values(
+		    													<if test="outTradeNo != null">,#{outTradeNo,jdbcType=BIGINT}</if>
+					        		)
+	</insert>
+
+	<update id="update" parameterType="outTradeNoSequence">
+		update out_trade_no_sequence
+		<set>			
+												<if test="outTradeNo != null">out_trade_no=#{outTradeNo,jdbcType=BIGINT},</if>	
+									</set>		
+		where 			</update>
+	
+	    	<select id="load" parameterType="outTradeNoSequence" resultMap="outTradeNoSequenceMap" >
+    		select * from out_trade_no_sequence where    		    	</select>
+	
+	<sql id="queryCommonSql">
+		FROM out_trade_no_sequence otns
+		<where>
+							    			            								<if test="outTradeNo != null">and otns.out_trade_no = #{outTradeNo}</if>												
+                            							</where>
+	</sql>
+	
+	<sql id="sortSql">		
+		<choose>			
+			<when test="sort != null and sort.trim() !=''">
+				order by ${sort}
+			</when>
+			<otherwise>
+				<if test="sortByDefault">
+					order by otns.GMT_CREATE DESC
+				</if>
+			</otherwise>
+		</choose>
+	</sql>
+
+	<select id="queryList" parameterType="outTradeNoSequenceQuery" resultMap="outTradeNoSequenceMap">
+		<include refid="common.pageBegin" />
+		select 		<choose>
+			<when test="columns != null and columns.length>0">
+				<foreach collection="columns" index="index" item="item">,${item}</foreach>
+			</when>
+			<otherwise>
+        		        			,otns.out_trade_no
+        			        					</otherwise>
+		</choose>
+		<include refid="queryCommonSql" />
+		<include refid="sortSql" />
+		<include refid="common.pageEnd" />
+	</select>
+
+	<select id="queryCount" parameterType="outTradeNoSequenceQuery" resultType="int">
+		select count(1)
+		<include refid="queryCommonSql" />
+	</select>
+	
+	<update id="updateStatus" parameterType="outTradeNoSequence">		
+		update out_trade_no_sequence set status=#{status} where 	</update>
+	
+			<delete id="delete" parameterType="outTradeNoSequence">
+    		delete from out_trade_no_sequence where     	</delete>
+	</mapper>

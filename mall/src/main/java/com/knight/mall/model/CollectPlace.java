@@ -8,7 +8,7 @@ import java.util.Date;
  * 实体类
  */
 public class CollectPlace implements Serializable {
-	private static final long serialVersionUID = 14762231066652L;
+	private static final long serialVersionUID = 14778094281622L;
 
 	private Long id;// 主键id
 	private Date gmtCreate;// 创建时间
@@ -20,6 +20,12 @@ public class CollectPlace implements Serializable {
 	private Long enterpriseId;// 商家id
 	private Integer collectTime;// 多少时间能取货单位小时，0就是可以及时取货
 	private BigDecimal fee;// 自提费用
+	private String startTime;// 开始取货时间
+	private String endTime;// 结束取货时间
+	private Integer maxDepositDays;// 货物最多存放时间
+	private String province;// 所属省
+	private String city;// 所属市
+	private String region;// 所属区
 
 	public CollectPlace() {
 	}
@@ -133,10 +139,72 @@ public class CollectPlace implements Serializable {
 		this.fee = fee;
 	}
 
+	/** 开始取货时间 */
+	public String getStartTime() {
+		return startTime;
+	}
+
+	/** 开始取货时间 */
+	public void setStartTime(String startTime) {
+		this.startTime = startTime;
+	}
+
+	/** 结束取货时间 */
+	public String getEndTime() {
+		return endTime;
+	}
+
+	/** 结束取货时间 */
+	public void setEndTime(String endTime) {
+		this.endTime = endTime;
+	}
+
+	/** 货物最多存放时间 */
+	public Integer getMaxDepositDays() {
+		return maxDepositDays;
+	}
+
+	/** 货物最多存放时间 */
+	public void setMaxDepositDays(Integer maxDepositDays) {
+		this.maxDepositDays = maxDepositDays;
+	}
+
+	/** 所属省 */
+	public String getProvince() {
+		return province;
+	}
+
+	/** 所属省 */
+	public void setProvince(String province) {
+		this.province = province;
+	}
+
+	/** 所属市 */
+	public String getCity() {
+		return city;
+	}
+
+	/** 所属市 */
+	public void setCity(String city) {
+		this.city = city;
+	}
+
+	/** 所属区 */
+	public String getRegion() {
+		return region;
+	}
+
+	/** 所属区 */
+	public void setRegion(String region) {
+		this.region = region;
+	}
+
 	@Override
 	public String toString() {
 		return "CollectPlace [ id=" + id + ", gmtCreate=" + gmtCreate + ", gmtModify=" + gmtModify + ", clpStatus="
 				+ clpStatus + ", clpName=" + clpName + ", clpAddress=" + clpAddress + ", clpTelephone=" + clpTelephone
-				+ ", enterpriseId=" + enterpriseId + ", collectTime=" + collectTime + ", fee=" + fee + "]";
+				+ ", enterpriseId=" + enterpriseId + ", collectTime=" + collectTime + ", fee=" + fee + ", startTime="
+				+ startTime + ", endTime=" + endTime + ", maxDepositDays=" + maxDepositDays + ", province=" + province
+				+ ", city=" + city + ", region=" + region + "]";
 	}
 }

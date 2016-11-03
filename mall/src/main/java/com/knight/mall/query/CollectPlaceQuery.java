@@ -10,7 +10,7 @@ import com.knight.mall.common.pageUtils.AbstractQueryParam;
  * 查询对象
  */
 public class CollectPlaceQuery extends AbstractQueryParam implements Serializable {
-	private static final long serialVersionUID = 14762231066651L;
+	private static final long serialVersionUID = 14778094281621L;
 
 	private Long[] idArray;// 主键id
 	private Date gmtCreateFrom;// 创建时间
@@ -25,6 +25,12 @@ public class CollectPlaceQuery extends AbstractQueryParam implements Serializabl
 	private Integer collectTime;// 多少时间能取货单位小时，0就是可以及时取货
 	private BigDecimal feeFrom;// 自提费用
 	private BigDecimal feeTo;// 自提费用
+	private String startTime;// 开始取货时间
+	private String endTime;// 结束取货时间
+	private Integer maxDepositDays;// 货物最多存放时间
+	private String province;// 所属省
+	private String city;// 所属市
+	private String region;// 所属区
 
 	/*** 主键id */
 	public Long[] getIdArray() {
@@ -154,5 +160,65 @@ public class CollectPlaceQuery extends AbstractQueryParam implements Serializabl
 	/*** 自提费用 */
 	public void setFeeTo(BigDecimal feeTo) {
 		this.feeTo = feeTo;
+	}
+
+	/*** 开始取货时间 */
+	public String getStartTime() {
+		return startTime;
+	}
+
+	/*** 开始取货时间 */
+	public void setStartTime(String startTime) {
+		this.startTime = startTime;
+	}
+
+	/*** 结束取货时间 */
+	public String getEndTime() {
+		return endTime;
+	}
+
+	/*** 结束取货时间 */
+	public void setEndTime(String endTime) {
+		this.endTime = endTime;
+	}
+
+	/*** 货物最多存放时间 */
+	public Integer getMaxDepositDays() {
+		return maxDepositDays;
+	}
+
+	/*** 货物最多存放时间 */
+	public void setMaxDepositDays(Integer maxDepositDays) {
+		this.maxDepositDays = maxDepositDays;
+	}
+
+	/*** 所属省 */
+	public String getProvince() {
+		return province;
+	}
+
+	/*** 所属省 */
+	public void setProvince(String province) {
+		this.province = province;
+	}
+
+	/*** 所属市 */
+	public String getCity() {
+		return city;
+	}
+
+	/*** 所属市 */
+	public void setCity(String city) {
+		this.city = city;
+	}
+
+	/*** 所属区 */
+	public String getRegion() {
+		return region;
+	}
+
+	/*** 所属区 */
+	public void setRegion(String region) {
+		this.region = region;
 	}
 }
