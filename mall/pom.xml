@@ -26,7 +26,6 @@
 		</dependency>
 
 		<!--spring mvc配置 -->
-
 		<dependency>
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-test</artifactId>
