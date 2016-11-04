@@ -1,6 +1,0 @@
-#parse("pages/commons/header.vm")
-<div class="content">
-首页
-</div>
-</body>
-</html>
