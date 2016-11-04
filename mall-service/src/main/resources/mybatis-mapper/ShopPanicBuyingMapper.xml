@@ -1,0 +1,166 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+
+<mapper namespace="com.knight.mall.mappers.ShopPanicBuyingMapper">
+	<resultMap id="shopPanicBuyingMap" type="shopPanicBuying">		
+					<id column="id" property="id"/><!-- 主键id -->			
+					<result column="pb_id" property="pbId"/><!-- 抢购商品id -->			
+					<result column="shop_id" property="shopId"/><!-- 商铺id -->			
+					<result column="GMT_CREATE" property="gmtCreate"/><!-- 创建时间 -->			
+					<result column="GMT_MODIFY" property="gmtModify"/><!-- 修改时间 -->			
+					<result column="status" property="status"/><!-- 状态1:进行中2:停止 -->			
+					<result column="start_time" property="startTime"/><!-- 抢购开始时间(开始时间与结束时间最大为24小时) -->			
+					<result column="end_time" property="endTime"/><!-- 抢购结束时间(开始时间与结束时间最大为24小时) -->			
+					<result column="pb_name" property="pbName"/><!-- (抢购)活动名称 -->			
+			</resultMap>
+
+	<insert id="insert" parameterType="shopPanicBuying"  useGeneratedKeys="true" keyProperty="id" >
+				<selectKey databaseId="oracle" keyProperty="id" order="BEFORE" resultType="long">
+			select SEQ_shop_panic_buying.nextval from dual
+		</selectKey>
+				insert into
+		shop_panic_buying(
+					<if test="_databaseId == 'oracle'">ID,</if>
+			<trim prefix="" prefixOverrides=",">
+											<if test="pbId != null">,pb_id</if>
+												<if test="shopId != null">,shop_id</if>
+												,GMT_CREATE
+												,GMT_MODIFY
+												<if test="status != null">,status</if>
+												<if test="startTime != null">,start_time</if>
+												<if test="endTime != null">,end_time</if>
+												<if test="pbName != null">,pb_name</if>
+							</trim>		)values(
+					<if test="_databaseId == 'oracle'">#{id},</if>
+			<trim prefix="" prefixOverrides=",">
+											<if test="pbId != null">,#{pbId,jdbcType=BIGINT}</if>
+												<if test="shopId != null">,#{shopId,jdbcType=BIGINT}</if>
+															    ,<include refid="common.now" />
+															    ,<include refid="common.now" />
+												<if test="status != null">,#{status,jdbcType=INTEGER}</if>
+												<if test="startTime != null">,#{startTime,jdbcType=TIMESTAMP}</if>
+												<if test="endTime != null">,#{endTime,jdbcType=TIMESTAMP}</if>
+												<if test="pbName != null">,#{pbName,jdbcType=VARCHAR}</if>
+					        </trim>		)
+	</insert>
+
+	<update id="update" parameterType="shopPanicBuying">
+		update shop_panic_buying
+		<set>			
+												<if test="pbId != null">pb_id=#{pbId,jdbcType=BIGINT},</if>	
+																<if test="shopId != null">shop_id=#{shopId,jdbcType=BIGINT},</if>	
+																<if test="gmtCreate != null">GMT_CREATE=#{gmtCreate,jdbcType=TIMESTAMP},</if>	
+																					GMT_MODIFY=<include refid="common.now" />,
+																<if test="status != null">status=#{status,jdbcType=INTEGER},</if>	
+																<if test="startTime != null">start_time=#{startTime,jdbcType=TIMESTAMP},</if>	
+																<if test="endTime != null">end_time=#{endTime,jdbcType=TIMESTAMP},</if>	
+																<if test="pbName != null">pb_name=#{pbName,jdbcType=VARCHAR},</if>	
+									</set>		
+		where 					 id=#{id}
+			</update>
+	
+	    	<select id="load" parameterType="long" resultMap="shopPanicBuyingMap" >
+    		select * from shop_panic_buying where id=#{id}
+    	</select>
+	
+	<sql id="queryCommonSql">
+		FROM shop_panic_buying spb
+		<where>
+							    								<if test="idArray != null">
+						spb.id in
+						<foreach collection="idArray" index="index" item="item" open="(" separator="," close=")">#{item}</foreach>
+					</if>
+        									    			            								<if test="pbId != null">and spb.pb_id = #{pbId}</if>												
+                            									    			            								<if test="shopId != null">and spb.shop_id = #{shopId}</if>												
+                            									    			            								<if test="gmtCreateFrom != null">and spb.GMT_CREATE >= #{gmtCreateFrom}</if>
+						<if test="gmtCreateTo != null">
+							<choose>
+            					<when test="_databaseId == 'oracle'"><![CDATA[and spb.GMT_CREATE < #{gmtCreateTo} + 1]]></when>
+            					<when test="_databaseId == 'mysql'"><![CDATA[and spb.GMT_CREATE < date_add(#{gmtCreateTo}, interval 1 day)]]></when>
+            				</choose>							
+																																											</if>
+																													        									    			            								<if test="gmtModifyFrom != null">and spb.GMT_MODIFY >= #{gmtModifyFrom}</if>
+						<if test="gmtModifyTo != null">
+							<choose>
+            					<when test="_databaseId == 'oracle'"><![CDATA[and spb.GMT_MODIFY < #{gmtModifyTo} + 1]]></when>
+            					<when test="_databaseId == 'mysql'"><![CDATA[and spb.GMT_MODIFY < date_add(#{gmtModifyTo}, interval 1 day)]]></when>
+            				</choose>							
+																																											</if>
+																													        									    			            		    					<choose>
+            				<when test="status != null">and spb.status = #{status}</when>
+            				<when test="statusArray != null">
+            					and spb.status in
+            					<foreach collection="statusArray" index="index" item="item" open="(" separator="," close=")">#{item}
+            					</foreach>
+            				</when>
+            				<otherwise>
+																	and spb.status > 0
+								            				</otherwise>
+            			</choose>
+					        									    			            								<if test="startTimeFrom != null">and spb.start_time >= #{startTimeFrom}</if>
+						<if test="startTimeTo != null">
+							<choose>
+            					<when test="_databaseId == 'oracle'"><![CDATA[and spb.start_time < #{startTimeTo} + 1]]></when>
+            					<when test="_databaseId == 'mysql'"><![CDATA[and spb.start_time < date_add(#{startTimeTo}, interval 1 day)]]></when>
+            				</choose>							
+																																											</if>
+																													        									    			            								<if test="endTimeFrom != null">and spb.end_time >= #{endTimeFrom}</if>
+						<if test="endTimeTo != null">
+							<choose>
+            					<when test="_databaseId == 'oracle'"><![CDATA[and spb.end_time < #{endTimeTo} + 1]]></when>
+            					<when test="_databaseId == 'mysql'"><![CDATA[and spb.end_time < date_add(#{endTimeTo}, interval 1 day)]]></when>
+            				</choose>							
+																																											</if>
+																													        									    			            		            			<if test="pbName != null and pbName.trim() !=''">and spb.pb_name = #{pbName}</if>
+        			        							</where>
+	</sql>
+	
+	<sql id="sortSql">		
+		<choose>			
+			<when test="sort != null and sort.trim() !=''">
+				order by ${sort}
+			</when>
+			<otherwise>
+				<if test="sortByDefault">
+					order by spb.GMT_CREATE DESC
+				</if>
+			</otherwise>
+		</choose>
+	</sql>
+
+	<select id="queryList" parameterType="shopPanicBuyingQuery" resultMap="shopPanicBuyingMap">
+		<include refid="common.pageBegin" />
+		select spb.id				<choose>
+			<when test="columns != null and columns.length>0">
+				<foreach collection="columns" index="index" item="item">,${item}</foreach>
+			</when>
+			<otherwise>
+        		        			,spb.pb_id
+        			        		        			,spb.shop_id
+        			        		        			,spb.GMT_CREATE
+        			        		        			,spb.GMT_MODIFY
+        			        		        			,spb.status
+        			        		        			,spb.start_time
+        			        		        			,spb.end_time
+        			        		        			,spb.pb_name
+        			        					</otherwise>
+		</choose>
+		<include refid="queryCommonSql" />
+		<include refid="sortSql" />
+		<include refid="common.pageEnd" />
+	</select>
+
+	<select id="queryCount" parameterType="shopPanicBuyingQuery" resultType="int">
+		select count(1)
+		<include refid="queryCommonSql" />
+	</select>
+	
+	<update id="updateStatus" parameterType="shopPanicBuying">		
+		update shop_panic_buying set status=#{status} where   id=#{id} 	</update>
+	
+	    	<delete id="delete" parameterType="long">
+    		delete from shop_panic_buying where id=#{id}
+    	</delete>
+	</mapper>
